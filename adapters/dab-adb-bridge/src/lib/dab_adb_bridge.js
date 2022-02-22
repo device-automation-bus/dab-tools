@@ -86,19 +86,19 @@ export class DabDevice extends DabDeviceInterface {
     }
 
     launchApp = async (data) => {
-        if (typeof data.app !== "string")
-            return this.dabResponse(400, "'app' must be set as the application id to launch");
+        if (typeof data.appId !== "string")
+            return this.dabResponse(400, "'appId' must be set as the application id to launch");
 
         try {
-            data.app = data.app.toLowerCase();
-            if (!this.appMap[data.app] || !this.appMap[data.app].intent)
-                return this.dabResponse(404, `Couldn't find data for app ${data.app} in config file`);
+            data.appId = data.appId.toLowerCase();
+            if (!this.appMap[data.appId] || !this.appMap[data.appId].intent)
+                return this.dabResponse(404, `Couldn't find data for app ${data.appId} in config file`);
 
-            let intent = this.appMap[data.app].intent;
+            let intent = this.appMap[data.appId].intent;
             if (data.parameters) {
-                if (this.appMap[data.app].optionsPrefix) {
+                if (this.appMap[data.appId].optionsPrefix) {
                     logger.debug("Adding optionsPrefix to intent array");
-                    intent = [ ...intent, ...this.appMap[data.app].optionsPrefix ];
+                    intent = [ ...intent, ...this.appMap[data.appId].optionsPrefix ];
                 }
                 try {
                     if (typeof data.parameters === "object") data.parameters = JSON.stringify(data.parameters);
@@ -128,15 +128,15 @@ export class DabDevice extends DabDeviceInterface {
     }
 
     exitApp = async (data) => {
-        if (typeof data.app !== "string")
-            return this.dabResponse(400, "'app' must be set as the application id to exit");
+        if (typeof data.appId !== "string")
+            return this.dabResponse(400, "'appId' must be set as the application id to exit");
 
         try {
-            data.app = data.app.toLowerCase();
-            if (!this.appMap[data.app] || !this.appMap[data.app].package)
-                return this.dabResponse(404, `Couldn't find data for app ${data.app} in config file`);
+            data.appId = data.appId.toLowerCase();
+            if (!this.appMap[data.appId] || !this.appMap[data.appId].package)
+                return this.dabResponse(404, `Couldn't find data for app ${data.appId} in config file`);
 
-            await this.adb.stop(this.appMap[data.app].package);
+            await this.adb.stop(this.appMap[data.appId].package);
             return this.dabResponse();
         } catch (e) {
             return this.dabResponse(500, e.message);
