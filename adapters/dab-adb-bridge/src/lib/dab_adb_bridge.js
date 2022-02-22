@@ -127,6 +127,9 @@ export class DabDevice extends DabDeviceInterface {
         }
     }
 
+    /**
+     * Force stops the application
+     */
     exitApp = async (data) => {
         if (typeof data.appId !== "string")
             return this.dabResponse(400, "'appId' must be set as the application id to exit");
@@ -137,7 +140,7 @@ export class DabDevice extends DabDeviceInterface {
                 return this.dabResponse(404, `Couldn't find data for app ${data.appId} in config file`);
 
             await this.adb.stop(this.appMap[data.appId].package);
-            return this.dabResponse();
+            return {...this.dabResponse(), state: "STOPPED"};
         } catch (e) {
             return this.dabResponse(500, e.message);
         }
