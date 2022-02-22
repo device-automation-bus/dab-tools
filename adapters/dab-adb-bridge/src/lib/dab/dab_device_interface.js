@@ -101,10 +101,11 @@ export class DabDeviceInterface {
      * Publish as retained message to version topic the major version and the minor
      * version delimited by a full stop character . Major and minor versions are
      * non-negative integers.
-     * @returns {string[]}
      */
     version() {
-        return [JSON.parse(readFileSync('./package.json', 'utf8')).version];
+        const packageVersion = JSON.parse(readFileSync('./package.json', 'utf8')).version;
+        const dabVersion = packageVersion.substring(packageVersion, packageVersion.lastIndexOf(".")); // remove patch version
+        return { status: 200, versions: [dabVersion] };
     }
 
     /**
