@@ -229,7 +229,10 @@ export class AdbCommands {
                 logger.error(`getDeviceProps output to stderr: ${stderr.toString()}`);
                 return;
             }
-            let outputArr = stdout.split("\n");
+            const outputArr = stdout
+                .replace(/\r?\n|\r/g, "%%") // replace newlines with '%%' to fix multi-line properties
+                .replace(/]%%\[/g, "]\n[") // re-add newline between different properties
+                .split("\n");
             const propObj = {};
             for (let line of outputArr) {
                 line = line.trim().replace(/\s+/, " ").replace(/\r?\n|\r/, "");
