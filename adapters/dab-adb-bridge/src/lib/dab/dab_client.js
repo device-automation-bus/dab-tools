@@ -71,13 +71,13 @@ export class DabClient {
 
     async listApps() {
         return await this.client.request(
-            topics.APP_LIFECYCLE_LIST_TOPIC
+            topics.APPLICATIONS_LIST_TOPIC
         )
     }
 
     async exitApp(app, force=false) {
         return await this.client.request(
-            topics.APP_LIFECYCLE_EXIT_TOPIC,
+            topics.APPLICATIONS_EXIT_TOPIC,
             {
                 app: app,
                 force: force
@@ -87,7 +87,7 @@ export class DabClient {
 
     async launchApp(app, parameters) {
         return await this.client.request(
-            topics.APP_LIFECYCLE_LAUNCH_TOPIC,
+            topics.APPLICATIONS_LAUNCH_TOPIC,
             {
                 app: app,
                 parameters: parameters

@@ -13,11 +13,14 @@
  limitations under the License.
  */
 
-export const APP_LIFECYCLE_LIST_TOPIC = "dab/appLifecycle/list";
-export const APP_LIFECYCLE_LAUNCH_TOPIC = "dab/appLifecycle/launch";
-export const APP_LIFECYCLE_EXIT_TOPIC = "dab/appLifecycle/exit";
+export const APPLICATIONS_LIST_TOPIC = "dab/applications/list";
+export const APPLICATIONS_LAUNCH_TOPIC = "dab/applications/launch";
+export const APPLICATIONS_LAUNCH_WITH_CONTENT_TOPIC = "dab/applications/launch-with-content";
+export const APPLICATIONS_GET_STATE_TOPIC = "dab/applications/get-state";
+export const APPLICATIONS_EXIT_TOPIC = "dab/applications/exit";
 
 export const SYSTEM_RESTART_TOPIC = "dab/system/restart";
+export const SYSTEM_LANGUAGE_LIST_TOPIC = "dab/system/language/list";
 export const SYSTEM_LANGUAGE_GET_TOPIC = "dab/system/language/get";
 export const SYSTEM_LANGUAGE_SET_TOPIC = "dab/system/language/set";
 
@@ -32,7 +35,7 @@ export const TELEMETRY_METRICS_TOPIC = "dab/device-telemetry/metrics";
 export const INPUT_KEY_PRESS_TOPIC = "dab/input/key-press";
 export const INPUT_LONG_KEY_PRESS_TOPIC = "dab/input/long-key-press";
 
-export const HEALTH_CHECK_TOPIC = "dab/health/get";
+export const HEALTH_CHECK_TOPIC = "dab/health-check/get";
 
 export const DEVICE_INFO_TOPIC = "dab/device/info";
 export const DAB_VERSION_TOPIC = "dab/version";

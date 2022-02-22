@@ -38,10 +38,9 @@ export class DabDeviceInterface {
         //Pre-Init Handler Registration
         await Promise.all(
             [
-                this.client.handle(topics.APP_LIFECYCLE_LIST_TOPIC, this.listApps),
-                this.client.handle(topics.APP_LIFECYCLE_LIST_TOPIC, this.listApps),
-                this.client.handle(topics.APP_LIFECYCLE_LAUNCH_TOPIC, this.launchApp),
-                this.client.handle(topics.APP_LIFECYCLE_EXIT_TOPIC, this.exitApp),
+                this.client.handle(topics.APPLICATIONS_LIST_TOPIC, this.listApps),
+                this.client.handle(topics.APPLICATIONS_LAUNCH_TOPIC, this.launchApp),
+                this.client.handle(topics.APPLICATIONS_EXIT_TOPIC, this.exitApp),
                 this.client.handle(topics.SYSTEM_RESTART_TOPIC, this.restartDevice),
                 this.client.handle(topics.INPUT_KEY_PRESS_TOPIC, this.keyPress),
                 this.client.handle(topics.INPUT_LONG_KEY_PRESS_TOPIC, this.keyPressLong),
