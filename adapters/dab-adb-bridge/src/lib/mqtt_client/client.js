@@ -197,7 +197,7 @@ class Client {
           const status = error.status || 500;
           return this.publish(responseTopic, {
             status: status,
-            error: serializeError(error),
+            error: JSON.stringify(serializeError(error)),
             request: msg
           });
         }
