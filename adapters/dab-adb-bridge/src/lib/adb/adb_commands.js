@@ -15,7 +15,7 @@
 
 import config from 'config';
 import * as APP_STATUS from './app_status.js';
-import { KEY_CODES } from './adb_keymap.js';
+import { ANDROID_CODES, KEY_CODES } from './adb_keymap.js';
 import { spawn } from 'promisify-child-process';
 import { getLogger, sleep } from "../util.js";
 const logger = getLogger();
@@ -423,6 +423,20 @@ export class AdbCommands {
         if (new RegExp(appPackage).test(output)) {
             throw new Error(`Failed to stop ${appPackage} on ${this.device.id}`);
         }
+    }
+
+    async backgroundApp(appPackage) {
+        logger.debug(`Backgrounding current app on ${this.device.id}`);
+        const {stderr } = await spawn(
+            this.adb,
+            ["-s", this.device.id, "shell", "input", "keyevent", ANDROID_CODES.KEYCODE_HOME],
+            { encoding: "utf8" }
+        );
+
+        if (stderr.toString() !== "") {
+            throw new Error(`ADB backgroundApp output to stderr: ${stderr.toString()}`);
+        }
+        await this.expectStatus(appPackage, APP_STATUS.HIDDEN, 10);
     }
 
     async expectStatus(appPackage, expectedState, timeoutSeconds) {

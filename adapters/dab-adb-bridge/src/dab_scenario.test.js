@@ -45,8 +45,8 @@ try {
 
     await sleep(30 * 1000); //Let it roll for 30 seconds
 
-    let exit_response = await dab_client.exitApp("youtube" );
-    console.log(`exit app: youtube, response: ${JSON.stringify(exit_response)}\n`);
+    let exit_response = await dab_client.exitApp("youtube", false);
+    console.log(`Exit app: youtube, force: false, response: ${JSON.stringify(exit_response)}\n`);
 
     let reboot_response = await dab_client.restart();
     console.log(`restart device: ${JSON.stringify(reboot_response)}\n`);

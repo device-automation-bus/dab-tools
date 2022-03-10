@@ -13,7 +13,7 @@
  limitations under the License.
  */
 
-const ANDROID_CODES = {
+export const ANDROID_CODES = {
     KEYCODE_HOME: 3,
     KEYCODE_BACK: 4,
     KEYCODE_0: 7,

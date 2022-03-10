@@ -15,9 +15,26 @@
 
 import bunyan from 'bunyan';
 import {readFileSync} from 'fs';
+import { HIDDEN, RUNNING, STOPPED } from "./adb/app_status.js";
+import {
+  APPLICATION_STATE_BACKGROUND,
+  APPLICATION_STATE_FOREGROUND,
+  APPLICATION_STATE_STOPPED
+} from "./dab/dab_constants.js";
 
 export function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+export function adbAppStatusToDabAppState(appStatus) {
+  switch (appStatus) {
+    case RUNNING:
+      return APPLICATION_STATE_FOREGROUND;
+    case HIDDEN:
+      return APPLICATION_STATE_BACKGROUND
+    case STOPPED:
+      return APPLICATION_STATE_STOPPED;
+  }
 }
 
 // Static logger

@@ -16,7 +16,10 @@
 import config from 'config';
 import { DabDeviceInterface } from './dab/dab_device_interface.js';
 import { AdbCommands } from './adb/adb_commands.js';
-import { getLogger } from "./util.js";
+import {adbAppStatusToDabAppState, getLogger} from "./util.js";
+import { APPLICATION_STATE_BACKGROUND, APPLICATION_STATE_STOPPED } from "./dab/dab_constants.js";
+import * as APP_STATUS from './adb/app_status.js';
+
 const logger = getLogger();
 
 export class DabDevice extends DabDeviceInterface {
@@ -127,20 +130,35 @@ export class DabDevice extends DabDeviceInterface {
         }
     }
 
-    /**
-     * Force stops the application
-     */
     exitApp = async (data) => {
         if (typeof data.appId !== "string")
             return this.dabResponse(400, "'appId' must be set as the application id to exit");
 
         try {
             data.appId = data.appId.toLowerCase();
-            if (!this.appMap[data.appId] || !this.appMap[data.appId].package)
+            const appPackage = this.appMap[data.appId]?.package;
+            if (!appPackage)
                 return this.dabResponse(404, `Couldn't find data for app ${data.appId} in config file`);
 
-            await this.adb.stop(this.appMap[data.appId].package);
-            return {...this.dabResponse(), state: "STOPPED"};
+            const appStatus = (await this.adb.status(appPackage))?.state;
+            if (data.force) {
+                if (appStatus !== APP_STATUS["STOPPED"]) {
+                    await this.adb.stop(appPackage);
+                }
+                return {...this.dabResponse(), state: APPLICATION_STATE_STOPPED};
+            }
+
+            if (appStatus === APP_STATUS["RUNNING"]) {
+                try {
+                    await this.adb.backgroundApp(appPackage)
+                    return {...this.dabResponse(), state: APPLICATION_STATE_BACKGROUND};
+                } catch (e) {
+                    logger.warn(`Failed to background ${data.appId}, will try force closing it instead.`)
+                    await this.adb.stop(appPackage);
+                    return {...this.dabResponse(), state: APPLICATION_STATE_STOPPED};
+                }
+            }
+            return {...this.dabResponse(), state: adbAppStatusToDabAppState(appStatus)}
         } catch (e) {
             return this.dabResponse(500, e.message);
         }

@@ -75,21 +75,21 @@ export class DabClient {
         )
     }
 
-    async exitApp(app, force=false) {
+    async exitApp(appId, force=false) {
         return await this.client.request(
             topics.APPLICATIONS_EXIT_TOPIC,
             {
-                app: app,
+                appId: appId,
                 force: force
             }
         )
     }
 
-    async launchApp(app, parameters) {
+    async launchApp(appId, parameters) {
         return await this.client.request(
             topics.APPLICATIONS_LAUNCH_TOPIC,
             {
-                app: app,
+                appId: appId,
                 parameters: parameters
             }
         )
