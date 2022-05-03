@@ -41,6 +41,7 @@ export class DabDeviceInterface {
                 this.client.handle(topics.APPLICATIONS_LIST_TOPIC, this.listApps),
                 this.client.handle(topics.APPLICATIONS_LAUNCH_TOPIC, this.launchApp),
                 this.client.handle(topics.APPLICATIONS_EXIT_TOPIC, this.exitApp),
+                this.client.handle(topics.APPLICATIONS_GET_STATE_TOPIC, this.getAppState),
                 this.client.handle(topics.SYSTEM_RESTART_TOPIC, this.restartDevice),
                 this.client.handle(topics.INPUT_KEY_PRESS_TOPIC, this.keyPress),
                 this.client.handle(topics.INPUT_LONG_KEY_PRESS_TOPIC, this.keyPressLong),
@@ -301,6 +302,10 @@ export class DabDeviceInterface {
      */
     async exitApp(data) {
         return {status: 501, error: "Exit app not implemented"};
+    }
+
+    async getAppState(data) {
+        return {status: 501, error: "Get app state not implemented"};
     }
 
     /**

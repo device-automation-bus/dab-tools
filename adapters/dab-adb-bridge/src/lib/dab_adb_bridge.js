@@ -164,6 +164,22 @@ export class DabDevice extends DabDeviceInterface {
         }
     }
 
+    getAppState = async (data) => {
+        if (typeof data.appId !== "string")
+            return this.dabResponse(400, "'appId' must be set as the application id to query");
+        try {
+            data.appId = data.appId.toLowerCase();
+            const appPackage = this.appMap[data.appId]?.package;
+            if (!appPackage)
+                return this.dabResponse(404, `Couldn't find data for app ${data.appId} in config file`);
+
+            const appStatus = (await this.adb.status(appPackage)).state;
+            return {...this.dabResponse(), state: adbAppStatusToDabAppState(appStatus)}
+        } catch (e) {
+            return this.dabResponse(500, e.message);
+        }
+    }
+
     restartDevice = async () => {
         const handleReboot = async () => {
             await this.notify("warn", "Device is rebooting and will be temporarily offline");
